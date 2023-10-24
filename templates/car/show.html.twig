@@ -1,0 +1,18 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Voiture n° :
+	{{car.id}}
+{% endblock %}
+
+{% block body %}
+		<div class="container">
+			<h1>{{car.brand}} {{car.model}}</h1>
+			<p>{{car.description}}</p>
+			<p class="h2">
+                {{car.price}}€</strong>
+			</p>
+            <img src="{{car.coverImage}}" alt="">
+			<a href="#" class="btn btn-primary">Acheter</a>
+		</div>
+</div>
+{% endblock %}

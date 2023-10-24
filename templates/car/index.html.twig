@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Voitures{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            {% if brand %}
+                <h1>Voitures de {{brand}}</h1>
+            {% else %}
+                <h1>Toutes nos voitures</h1>
+            {% endif %}
+            {% for car in cars %}
+            {% set url = path('car_show', {'id':car.id}) %}
+                <div class="col-md-4">
+                    <div class="card bg-warning mb-3">
+                        <div class="card-header text-center">
+                            <strong>{{car.brand}} {{car.model}}</strong>
+                            <strong>{{car.price}}€</strong>
+                        </div>
+                        <img src="{{car.coverImage}}" alt="Image de l'annonce {{car.model}}">
+                        <div class="card-body">
+                            <p class="card-text">{{car.description}}</p>
+                            <a href="{{url}}" class="btn btn-secondary">En savoir plus</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -21,6 +21,15 @@ class CarsRepository extends ServiceEntityRepository
         parent::__construct($registry, Cars::class);
     }
 
+    public function distinctCategories()
+    {
+        return $this->createQueryBuilder('cc')
+            ->select('cc.brand', 'cc.urlBrand', 'cc.slugBrand')
+            ->groupBy('cc.brand')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Cars[] Returns an array of Cars objects
 //     */

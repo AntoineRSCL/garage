@@ -3,29 +3,52 @@
 {% block title %}Nos Voitures{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            {% if brand %}
-                <h1>Voitures de {{brand}}</h1>
+    <div class="accCars">
+        {% if brand %}
+            <h1>Nos voitures {{logoBrand.brand}}</h1>
+        {% else %}
+            <h1>Toutes nos voitures</h1>
+        {% endif %}
+    </div>
+    <div class="menuBrand">
+        {% for cat in categories %}
+        {% set url = path('cars_brand', {'slug_brand':cat.slugBrand}) %}
+            {% if cat.slugBrand == brand %}
+                <a href="/cars">
+                    <div class='active'>
+                        <img src="{{cat.urlBrand}}" alt="">
+                    </div>
+                </a>
             {% else %}
-                <h1>Toutes nos voitures</h1>
+                <a href="{{url}}">
+                    <div>
+                        <img src="{{cat.urlBrand}}" alt="">
+                    </div>
+                </a>
             {% endif %}
-            {% for car in cars %}
-            {% set url = path('car_show', {'id':car.id}) %}
-                <div class="col-md-4">
-                    <div class="card bg-warning mb-3">
-                        <div class="card-header text-center">
-                            <strong>{{car.brand}} {{car.model}}</strong>
-                            <strong>{{car.price}}€</strong>
-                        </div>
-                        <img src="{{car.coverImage}}" alt="Image de l'annonce {{car.model}}">
-                        <div class="card-body">
-                            <p class="card-text">{{car.description}}</p>
-                            <a href="{{url}}" class="btn btn-secondary">En savoir plus</a>
-                        </div>
+        {% endfor %}
+    </div>
+    <div class="contenaireVoiture">
+        {% for car in cars %}
+        {% set url = path('car_show', {'id':car.id}) %}
+            <div class="voiture">
+                <div class="imgVoit">
+                    <img src="{{car.coverImage}}" alt="Image de ">
+                </div>
+                <div class="infoVoit">
+                    <h3 class="nomVoit">{{car.brand}} {{car.model}} {{car.releaseYear}}</h3>
+                    <div class="priceKM">
+                        <h5 class="price">{{car.price}} €</h5>
+                        <h5 class="km">{{car.kilometers}} km</h5>
+                    </div>
+                    <div class="descriptionVoit">
+                        <p>{{car.description}}</p>
+                    </div>
+                    <div class="btnVoit">
+                        <a class="btn" href="{{url}}">En savoir plus</a>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

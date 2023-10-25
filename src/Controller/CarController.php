@@ -20,10 +20,13 @@ class CarController extends AbstractController
     public function index(CarsRepository $repo): Response
     {
         $cars = $repo->findAll();
+        $categories = $repo->distinctCategories();
         
         return $this->render('car/index.html.twig', [
             'cars' => $cars,
-            'brand' => ""
+            'brand' => "",
+            'logoBrand' => "",
+            'categories' => $categories
         ]);
     }
 
@@ -31,10 +34,14 @@ class CarController extends AbstractController
     public function brand(string $slug_brand, CarsRepository $repo): Response
     {
         $cars = $repo->findBy(array('slugBrand' => $slug_brand));
+        $url_brand = $repo->findBy(array('slugBrand' => $slug_brand),array('price' => 'ASC'),1 ,0)[0];
+        $categories = $repo->distinctCategories();
 
         return $this->render('car/index.html.twig', [
             'cars' => $cars,
-            'brand' => $slug_brand
+            'brand' => $slug_brand,
+            'logoBrand' => $url_brand,
+            'categories' => $categories
         ]);
     }
 

@@ -61,6 +61,9 @@ class Cars
     #[ORM\Column(length: 255)]
     private ?string $slugModel = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $urlBrand = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -246,6 +249,8 @@ class Cars
         return $this;
     }
 
+    
+
     /**
      * Permet d'initialiser les slugs automatiquement
      *
@@ -263,6 +268,47 @@ class Cars
         if(empty($this->slugModel))
         {
             $this->slugModel = $slugify->slugify($this->model);
+        }
+    }
+
+    public function getUrlBrand(): ?string
+    {
+        return $this->urlBrand;
+    }
+
+    public function setUrlBrand(string $urlBrand): static
+    {
+        $this->urlBrand = $urlBrand;
+
+        return $this;
+    }
+
+    /**
+     * Intialise les images des marques
+     *
+     * @return void
+     */
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function initalizeUrlBrand(): void
+    {
+        if($this->brand == "Toyota")
+        {
+            $this->urlBrand = "https://www.garagepieters.be/wp-content/uploads/2017/05/Toyota-Logo-Free-Download-PNG.png";
+        }else if($this->brand == "Porsche"){
+            $this->urlBrand = "https://pngimg.com/uploads/porsche_logo/porsche_logo_PNG1.png";
+        }else if($this->brand == "Volkswagen"){
+            $this->urlBrand = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Volkswagen_logo_2019.svg/2048px-Volkswagen_logo_2019.svg.png";
+        }else if($this->brand == "BMW"){
+            $this->urlBrand = "https://seeklogo.com/images/B/bmw-logo-248C3D90E6-seeklogo.com.png";
+        }else if($this->brand == "Alfa Romeo"){
+            $this->urlBrand = "https://upload.wikimedia.org/wikipedia/fr/thumb/d/d7/Logo_Alfa_Romeo.svg/1024px-Logo_Alfa_Romeo.svg.png";
+        }else if($this->brand == "Ford"){
+            $this->urlBrand = "https://upload.wikimedia.org/wikipedia/commons/c/c7/Ford-Motor-Company-Logo.png";
+        }else if($this->brand == "Lamborghini"){
+            $this->urlBrand = "https://upload.wikimedia.org/wikipedia/fr/thumb/1/1d/Lamborghini-Logo.svg/672px-Lamborghini-Logo.svg.png";
+        }else if($this->brand == "Audi"){
+            $this->urlBrand = "https://upload.wikimedia.org/wikipedia/fr/thumb/1/15/Audi_logo.svg/1280px-Audi_logo.svg.png";
         }
     }
 }

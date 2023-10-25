@@ -1,5 +1,78 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <h1 class="accueil">Hello</h1>
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
+        <div class="carousel-indicators">
+            {% for car in cars %}
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{loop.index0}}" {% if loop.first %} class="active" aria-current="true" {% endif %} aria-label="Slide {{loop.index}}"></button>
+            {% endfor %}
+        </div>
+        <div class="carousel-inner">
+            {% for car in cars %}
+                {% set url = path('car_show', {'id':car.id}) %}
+                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                    <div class="content-carousel">
+                        <div class="car-carousel">
+                            <div class="carCarouHaut">
+                                <div class="texteCarCarouHaut">
+                                    <span>{{car.model}}</span>
+                                </div>
+                                <div class="contenuCarCarouHaut">
+                                    <div class="nomCarCarou">
+                                        <h2>{{car.brand}} {{car.model}} {{car.releaseYear}}</h2>
+                                    </div>
+                                    <div class="descriptionCarCarou">
+                                        <p>{{car.description}}</p>
+                                    </div>
+                                    <div class="imageCarCarou">
+                                        <div class="btnsCarou">
+                                            <a href="{{url}}" class="btn btn-warning">En savoir plus</a>
+                                            <a href="{{path('cars_index')}}" class="btn btn-outline-primary">Voir toutes les voitures</a>
+                                            <div class="miniLogoMarque" style="background-image:url({{car.urlBrand}})"></div>
+                                        </div>
+                                        <div class="voitCarou" style="background-image:url({{car.coverImage}})"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carCarouBas">
+                                <div class="infosCarouBas">
+                                    <div class="contenuInfo">
+                                        <div class="logoContenu" style="fill:orange"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM288 96a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM256 416c35.3 0 64-28.7 64-64c0-17.4-6.9-33.1-18.1-44.6L366 161.7c5.3-12.1-.2-26.3-12.3-31.6s-26.3 .2-31.6 12.3L257.9 288c-.6 0-1.3 0-1.9 0c-35.3 0-64 28.7-64 64s28.7 64 64 64zM176 144a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM96 288a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm352-32a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg></div>
+                                        <div class="chiffreContenu"> <strong>{{car.power}}</strong><span>Chevaux</span></div>
+                                    </div>
+                                    <div class="contenuInfo">
+                                        <div class="logoContenu" style="fill:orange"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512"><<path d="M112 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm40 304V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V256.9L59.4 304.5c-9.1 15.1-28.8 20-43.9 10.9s-20-28.8-10.9-43.9l58.3-97c17.4-28.9 48.6-46.6 82.3-46.6h29.7c33.7 0 64.9 17.7 82.3 46.6l58.3 97c9.1 15.1 4.2 34.8-10.9 43.9s-34.8 4.2-43.9-10.9L232 256.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V352H152z"/></svg></div>
+                                        <div class="chiffreContenu"> <strong>{{car.owners}}</strong><span>Ex. Propriétaires</span></div>
+                                    </div>
+                                    <div class="contenuInfo">
+                                        <div class="logoContenu">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><path d="M64 64C28.7 64 0 92.7 0 128V384c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H64zm64 320H64V320c35.3 0 64 28.7 64 64zM64 192V128h64c0 35.3-28.7 64-64 64zM448 384c0-35.3 28.7-64 64-64v64H448zm64-192c-35.3 0-64-28.7-64-64h64v64zM288 160a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/></svg>
+                                        </div>
+                                        <div class="chiffreContenu"><span>À partir de </span><strong>{{car.price}}€</strong></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <h2 class="annonceCat">Nos différentes marques :</h2>
+    <div class="tableauMarque">
+        <div class="contenuCateg">
+            {% for cat in category %}
+            {% set url = path('cars_brand', {'slug_brand':cat.slugBrand}) %}
+                <a href="{{url}}">
+                    <div class="category">
+                        <div class='logoMarque'>
+                            <img src="{{cat.urlBrand}}" alt="">
+                        </div>
+                    </div>
+                </a>
+
+            {% endfor %}
+        </div>
+    </div>
+    <div class="blanc"></div>
 {% endblock %}

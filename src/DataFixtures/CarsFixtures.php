@@ -4,20 +4,52 @@ namespace App\DataFixtures;
 
 use Faker\Factory;
 use App\Entity\Cars;
+use App\Entity\User;
 use App\Entity\Images;
 use Cocur\Slugify\Slugify;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 ;
 
 class CarsFixtures extends Fixture
 {
+    private $passwordHasher;
+
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
+        $this->passwordHasher = $passwordHasher;
+    }
+
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
         $slugify = new Slugify();
 
         $brands = ["Volkswagen", "Alfa Romeo", "BMW", "Audi", "Toyota", "Porsche", "Lamborghini", "Ford"];
+
+        $users = []; //Init d'un tableau pour recup des users pour les annonces
+        $genres = ['male', "femelle"];
+
+        //Création des membres
+        for ($u=1; $u <= 10; $u++) { 
+            $user = new User();
+            $genre = $faker->randomElement($genres);
+
+            $hash = $this->passwordHasher->hashPassword($user, 'StandardChampion');
+
+            $user->setFirstName($faker->firstName($genre))
+                ->setLastName($faker->lastName())
+                ->setEmail($faker->email())
+                ->setIntroduction($faker->sentence())
+                ->setDescription('<p>'.join("<p></p>",$faker->paragraphs(3)).'</p>')
+                ->setPassword($hash)
+                ->setPicture('');
+
+            $manager->persist($user);
+
+            $users[] = $user; // ajouter un user au tableau(pour les annonces)
+        }
 
         $modelVW = ["Golf", "Passat", "Jetta", "Tiguan"];
         $imagesVW = ["https://i.pinimg.com/originals/03/5c/6d/035c6d9e39fe11852356f5d9d39bb015.png", "https://i.pinimg.com/originals/5f/cc/fa/5fccfac04b16562e72515dc9a287fb40.png", "https://www.pngplay.com/wp-content/uploads/13/Volkswagen-Jetta-PNG-Free-File-Download.png", "https://images.dealer.com/ddc/vehicles/2023/Volkswagen/Tiguan/SUV/perspective/front-left/2023_76.png"];
@@ -75,6 +107,8 @@ class CarsFixtures extends Fixture
                 $coverImg = $imagesFord[$alea];
             }
             
+            //liaison avec l'user
+            $user = $users[rand(0, count($users)-1)];
 
             $car->setBrand($brand)
                 ->setModel($model)
@@ -88,7 +122,8 @@ class CarsFixtures extends Fixture
                 ->setReleaseYear(rand(2006,2023))
                 ->setTransmission($transmission)
                 ->setDescription($description)
-                ->setOptions('<p>'.join("<p></p>",$faker->paragraphs(3)).'</p>');
+                ->setOptions('<p>'.join("<p></p>",$faker->paragraphs(3)).'</p>')
+                ->setSeller($user);
 
                 //Gestion des images des produits
                 for ($g=1; $g <= rand(3,5) ; $g++) { 

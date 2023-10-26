@@ -36,6 +36,12 @@ class CarController extends AbstractController
     #[Route("cars/new", name:"cars_create")]
     public function create(Request $request, EntityManagerInterface $manager): Response
     {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('account_login', [
+                
+            ]);
+        }
+
         $car = new Cars();
 
         $form = $this->createForm(CarsType::class, $car);
@@ -50,6 +56,9 @@ class CarController extends AbstractController
                 $image->setCars($car);
                 $manager->persist($image);
             }
+
+            //On ajoute l'user
+            $product->setSeller($this->getUser());
 
             // je persiste mon objet Ad
             $manager->persist($car);

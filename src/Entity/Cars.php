@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\CarsRepository;
 
 #[ORM\Entity(repositoryClass: CarsRepository::class)]
@@ -19,12 +20,15 @@ class Cars
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 255,  maxMessage: "La marque ne doit pas faire plus de 255 caractères")]
     private ?string $brand = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 255, maxMessage: "Le nom ne doit pas faire plus de 255 caractères")]
     private ?string $model = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Url(message: "Il faut une URL valide")]
     private ?string $coverImage = null;
 
     #[ORM\Column]
@@ -43,18 +47,22 @@ class Cars
     private ?int $power = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 255, maxMessage: "Le carburant ne doit pas faire plus de 255 caractères")]
     private ?string $fuel = null;
 
     #[ORM\Column]
     private ?int $releaseYear = null;
 
     #[ORM\Column(length: 30)]
+    #[Assert\Length(max: 30, maxMessage: "Le type de transmission ne doit pas faire plus de 30 caractères")]
     private ?string $transmission = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 10, max: 255, minMessage: "La description doit faire plus de 10 caractères", maxMessage: "La description ne doit pas faire plus de 255 caractères")]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Length(min: 30, minMessage: "Les options doivent faire plus de 30 caractères")]
     private ?string $options = null;
 
     #[ORM\Column(length: 255)]
@@ -68,6 +76,10 @@ class Cars
 
     #[ORM\OneToMany(mappedBy: 'cars', targetEntity: Images::class, orphanRemoval: true)]
     private Collection $images;
+
+    #[ORM\ManyToOne(inversedBy: 'cars')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $seller = null;
 
     public function __construct()
     {
@@ -348,6 +360,18 @@ class Cars
                 $image->setCars(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSeller(): ?User
+    {
+        return $this->seller;
+    }
+
+    public function setSeller(?User $seller): static
+    {
+        $this->seller = $seller;
 
         return $this;
     }

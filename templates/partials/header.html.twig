@@ -9,7 +9,21 @@
         <li>
             <a href="{{ path('homepage') }}"><h2>Garage</h2></a>
         </li>
-    
+        {% if app.user %}
+            <li>
+                <a href="#">Mon compte</a>
+            </li>
+            <li>
+                <a href="{{path('account_logout')}}">Déconnexion</a>
+            </li>
+        {% else %}
+            <li>
+                <a href="{{path('account_register')}}">Inscription</a>
+            </li>
+            <li>
+                <a href="{{path('account_login')}}">Connexion</a>
+            </li>
+        {% endif %}
     </ul>
 </nav>
 {% for label, messages in app.flashes %}

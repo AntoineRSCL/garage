@@ -217,7 +217,7 @@
 }
 
 .tableauMarque {
-    height: 75vh;
+    min-height: 75vh;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -226,7 +226,7 @@
 
     .contenuCateg {
         width: 80%;
-        height: 80%;
+        min-height: 80%;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         overflow: hidden;
@@ -298,10 +298,6 @@
 
 
 }
-.blanc {
-    height: 50vh;
-}
-
 .accCars{
     width: 80%;
     height: 5vh;
@@ -340,6 +336,19 @@
             background-color: rgb(78, 78, 78);
         }
 
+        &:hover{
+            background-color: rgb(78, 78, 78) !important;
+            .active{
+                background-color: rgb(78, 78, 78);
+            }
+        }
+
+    }
+    &:hover{
+
+        .active{
+            background-color: #272B30;
+        }
     }
 
 }

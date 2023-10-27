@@ -1,0 +1,52 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Profil de :
+	{{user.lastName}}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="infosUser">
+            <div class="nomPhoto">
+                <div class="photoUser">
+                    {% if user.picture %}
+                        <img class="emplacement" src="uploads/{{user.picture}}" alt="">
+                    {% else %}
+                        <div class="emplacement"></div>
+                    {% endif %}
+                    <div class="btnPhotoUser">
+                        <a class="btn btn-outline-warning" href="{{path('account_modifimg')}}">Modifier Image</a>
+                        <a class="btn btn-outline-warning" href="{{path('account_delimg')}}">Supprimer Image</a>
+                    </div>
+                </div>
+                <div class="nomPrenom">
+                    <h1>Bonjour, {{ user.firstName }} {{user.lastName}}</h1>
+                    <div class="btnNomPren">
+                        <a class="btn btn-outline-warning" href="{{path('account_profile')}}">Modifier votre profil</a>
+                        <a class="btn btn-outline-warning" href="{{path('account_password')}}">Changez votre mot de passe</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h2>Vos voitures : </h2>
+        <a class="btn btn-warning" href="{{path('cars_create')}}">Ajouter une voiture</a>
+        <div class="gridCarProfil">
+            {% for car in cars %}
+            {% set url = path('car_show', {'id':car.id}) %}
+            {% set urlModif = path('car_edit', {'id':car.id}) %}
+                <div class="carProfil">
+                    <div class="imgCarProfil">
+                        <img src="{{car.coverImage}}" alt="">
+                    </div>
+                    <div class="nomCarProfil">
+                        <h2>{{car.brand}} {{car.model}} {{car.releaseYear}}</h2>
+                    </div>
+                    <div class="btnCarProfil">
+                        <a class="btn btn-warning" href="{{urlModif}}">Modifier la voiture</a>
+                        <a class="btn btn-outline-primary" href="{{url}}">Voir la voiture</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

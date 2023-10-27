@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Cars;
 use App\Form\CarsType;
 use App\Repository\CarsRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,9 +38,7 @@ class CarController extends AbstractController
     public function create(Request $request, EntityManagerInterface $manager): Response
     {
         if(!$this->getUser()){
-            return $this->redirectToRoute('account_login', [
-                
-            ]);
+            return $this->redirectToRoute('account_login', []);
         }
 
         $car = new Cars();
@@ -58,7 +57,7 @@ class CarController extends AbstractController
             }
 
             //On ajoute l'user
-            $product->setSeller($this->getUser());
+            $car->setSeller($this->getUser());
 
             // je persiste mon objet Ad
             $manager->persist($car);
@@ -107,10 +106,15 @@ class CarController extends AbstractController
      * @return Response
      */
     #[Route("/car/{id}", name: "car_show")]
-    public function show(int $id, Cars $car): Response
+    public function show(int $id, Cars $car, UserRepository $repos): Response
     {
+        $sellerId = $car->getSeller();
+        $user = $repos->findOneBy(array('id' => $sellerId));
+
+
         return $this->render("car/show.html.twig", [
-            'car' => $car
+            'car' => $car,
+            'user' => $user
         ]);
     }
 
@@ -125,6 +129,11 @@ class CarController extends AbstractController
     #[Route("/car/{id}/edit", name: "car_edit")]
     public function edit(Request $request, EntityManagerInterface $manager, Cars $car): Response
     {
+        if(!$this->getUser())
+        {
+            return $this->redirectToRoute('account_login', []);
+        }
+
         $form = $this->createForm(CarsType::class, $car);
         $form->handleRequest($request);
 

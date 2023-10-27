@@ -35,6 +35,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank(message: "Veuillez renseigner un mot de passe")]
+    #[Assert\Length(min:6, max:255, minMessage: "Votre mot de passe doit faire plus de 6 caractères", maxMessage: "Votre mot de passe ne doit pas faire plus de 255 caractères")]
     private ?string $password = null;
 
     //Creer a la main pour la confirmation du mot de passe

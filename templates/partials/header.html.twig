@@ -7,11 +7,11 @@
             <a href="{{ path('cars_index') }}">Nos Voitures</a>
         </li>
         <li>
-            <a href="{{ path('homepage') }}"><h2>Garage</h2></a>
+            <a href="{{ path('homepage') }}"><h2>Guido&Luigi</h2></a>
         </li>
         {% if app.user %}
             <li>
-                <a href="#">Mon compte</a>
+                <a href="{{path('account')}}">Mon compte</a>
             </li>
             <li>
                 <a href="{{path('account_logout')}}">Déconnexion</a>

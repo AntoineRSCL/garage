@@ -9,6 +9,8 @@ use App\Entity\UserImgModify;
 use App\Entity\PasswordUpdate;
 use App\Form\RegistrationType;
 use App\Form\PasswordUpdateType;
+use App\Repository\CarsRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -106,11 +108,29 @@ class AccountController extends AbstractController
             $manager->persist($user);
             $manager->flush();
 
-            return $this->redirectToRoute('account_login');
+            return $this->redirectToRoute('account');
         }
 
         return $this->render("account/registration.html.twig", [
             "myForm" => $form->createView()
+        ]);
+    }
+
+    #[Route("/account", name:"account")]
+    public function userProfile(CarsRepository $repo): Response
+    {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('account_login', [
+                
+            ]);
+        }
+        $user = $this->getUser();
+        $id = $user->getId();
+        $cars = $repo->findBy(array('seller' => $id));
+
+        return $this->render("account/profil.html.twig", [
+            'user' => $user,
+            "cars" => $cars
         ]);
     }
 
@@ -206,7 +226,7 @@ class AccountController extends AbstractController
                     'Votre mot de passe a bien été modifié'
                 );
 
-                return $this->redirectToRoute('homepage');
+                return $this->redirectToRoute('account');
             }
 
         }
@@ -244,7 +264,7 @@ class AccountController extends AbstractController
             );
         }
 
-        return $this->redirectToRoute('homepage');
+        return $this->redirectToRoute('account');
     }
 
     /**
@@ -303,7 +323,7 @@ class AccountController extends AbstractController
                 'Votre avatar a bien été modifié'
               );
 
-              return $this->redirectToRoute('homepage');
+              return $this->redirectToRoute('account');
 
         }
 

@@ -3,13 +3,16 @@
 {% block title %}Modifier avatar{% endblock %}
 
 {% block body %}
-    <div class="container full">
+    <div class="container full formConnex">
         <h1>Modification de l'avatar de {{app.user.email}}</h1>
-        <img src="/uploads/{{app.user.picture}}" alt="Avatar de {{app.user.email}}">
+        {% if app.user.picture %}
+            <img src="/uploads/{{app.user.picture}}" alt="Avatar de {{app.user.email}}"> 
+        {% endif %}
+        
         {{form_start(myForm)}}
 
             {{form_widget(myForm)}}
-            <button type="submit" class="btn btn-warning">Confirmez la modification de l'avatar</button>
+            <button type="submit" class="btn btn-outline-warning">Confirmez la modification de l'avatar</button>
 
         {{form_end(myForm)}}
     </div>

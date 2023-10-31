@@ -26,6 +26,46 @@
         {% endif %}
     </ul>
 </nav>
+<div class="collapse menuBurger" id="navbarToggleExternalContent" data-bs-theme="dark">
+  <div class="bg-dark p-4 intMenuBurger">
+    <ul>
+        <li>
+            <a href="{{ path('homepage') }}">Accueil</a>
+        </li>
+        <li>
+            <a href="{{ path('cars_index') }}">Nos Voitures</a>
+        </li>
+        {% if app.user %}
+            <li>
+                <a href="{{path('account')}}">Mon compte</a>
+            </li>
+            <li>
+                <a href="{{path('account_logout')}}">Déconnexion</a>
+            </li>
+        {% else %}
+            <li>
+                <a href="{{path('account_register')}}">Inscription</a>
+            </li>
+            <li>
+                <a href="{{path('account_login')}}">Connexion</a>
+            </li>
+        {% endif %}
+    </ul>
+  </div>
+</div>
+<nav class="navbar navbar-dark bg-dark navBurger">
+  <div class="container-fluid">
+    <button class="navbar-toggler btnBurger" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <ul>
+        <li>
+            <a href="{{ path('homepage') }}"><h2>Guido&Luigi</h2></a>
+        </li>
+    </ul>
+  </div>
+</nav>
+
 {% for label, messages in app.flashes %}
     <div class="container">
         <div class="alert alert-{{label}}">

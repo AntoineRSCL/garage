@@ -99,6 +99,39 @@ class CarController extends AbstractController
     }
 
     /**
+     * Permet de supprimer une annonce
+     *
+     * @param integer $id
+     * @param Cars $car
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    #[Route("/car/{id}/delete", name: 'car_delete')]
+    public function delete(int $id, Cars $car, EntityManagerInterface $manager): Response
+    {
+        if(!$this->getUser())
+        {
+            return $this->redirectToRoute('account_login', []);
+        }
+        if($car->getSeller()->getId() != $this->getUser()->getId())
+        {
+            return $this->render("bundles/TwigBundle/Exception/error403.html.twig", [
+                "exception" => ""
+            ]);
+        }
+
+        $this->addFlash(
+            'danger',
+            "L'annonce <strong>".$car->getId()."</strong> a bien été supprimée"
+        );
+
+        $manager->remove($car);
+        $manager->flush();
+
+        return $this->redirectToRoute('account');
+    }
+
+    /**
      * Permet d'afficher un produit 
      *
      * @param integer $id
@@ -132,6 +165,12 @@ class CarController extends AbstractController
         if(!$this->getUser())
         {
             return $this->redirectToRoute('account_login', []);
+        }
+        if($car->getSeller()->getId() != $this->getUser()->getId())
+        {
+            return $this->render("bundles/TwigBundle/Exception/error403.html.twig", [
+                "exception" => ""
+            ]);
         }
 
         $form = $this->createForm(CarsType::class, $car);

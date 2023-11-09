@@ -119,10 +119,9 @@ class AccountController extends AbstractController
     #[Route("/account", name:"account")]
     public function userProfile(CarsRepository $repo): Response
     {
-        if(!$this->getUser()){
-            return $this->redirectToRoute('account_login', [
-                
-            ]);
+        if(!$this->getUser())
+        {
+            return $this->redirectToRoute('account_login', []);
         }
         $user = $this->getUser();
         $id = $user->getId();
@@ -145,11 +144,11 @@ class AccountController extends AbstractController
     public function profile(Request $request, EntityManagerInterface $manager): Response
     {
 
-        if(!$this->getUser()){
-            return $this->redirectToRoute('account_login', [
-                
-            ]);
+        if(!$this->getUser())
+        {
+            return $this->redirectToRoute('account_login', []);
         }
+        
         $user = $this->getUser(); // permet de recup l'utilisateur connecté
 
         // pour la validation des images
@@ -194,11 +193,11 @@ class AccountController extends AbstractController
     public function updatePassword(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $hasher): Response
     {
 
-        if(!$this->getUser()){
-            return $this->redirectToRoute('account_login', [
-                
-            ]);
+        if(!$this->getUser())
+        {
+            return $this->redirectToRoute('account_login', []);
         }
+        
         $passwordUpdate = new PasswordUpdate();
         $user = $this->getUser();
         $form = $this->createForm(PasswordUpdateType::class, $passwordUpdate);
@@ -246,11 +245,11 @@ class AccountController extends AbstractController
     public function removeImg(EntityManagerInterface $manager): Response
     {
 
-        if(!$this->getUser()){
-            return $this->redirectToRoute('account_login', [
-                
-            ]);
+        if(!$this->getUser())
+        {
+            return $this->redirectToRoute('account_login', []);
         }
+        
         $user = $this->getUser();
         if(!empty($user->getPicture()))
         {
@@ -278,11 +277,11 @@ class AccountController extends AbstractController
     public function imgModify(Request $request, EntityManagerInterface $manager): Response
     {
 
-        if(!$this->getUser()){
-            return $this->redirectToRoute('account_login', [
-                
-            ]);
+        if(!$this->getUser())
+        {
+            return $this->redirectToRoute('account_login', []);
         }
+        
         $imgModify = new UserImgModify();
         $user = $this->getUser();
         $form = $this->createForm(ImgModifyType::class, $imgModify);

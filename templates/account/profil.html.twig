@@ -16,7 +16,7 @@
                     {% endif %}
                     <div class="btnPhotoUser">
                         <a class="btn btn-outline-warning" href="{{path('account_modifimg')}}">Modifier Image</a>
-                        <a class="btn btn-outline-warning" href="{{path('account_delimg')}}">Supprimer Image</a>
+                        <a class="btn btn-outline-danger" href="{{path('account_delimg')}}">Supprimer Image</a>
                     </div>
                 </div>
                 <div class="nomPrenom">
@@ -34,6 +34,7 @@
             {% for car in cars %}
             {% set url = path('car_show', {'id':car.id}) %}
             {% set urlModif = path('car_edit', {'id':car.id}) %}
+            {% set urlDelete = path('car_delete', {'id':car.id}) %}
                 <div class="carProfil">
                     <div class="imgCarProfil">
                         <img src="{{car.coverImage}}" alt="">
@@ -43,6 +44,7 @@
                     </div>
                     <div class="btnCarProfil">
                         <a class="btn btn-warning" href="{{urlModif}}">Modifier la voiture</a>
+                        <a class="btn btn-danger" href="{{urlDelete}}">Supprimer la voiture</a>
                         <a class="btn btn-outline-primary" href="{{url}}">Voir la voiture</a>
                     </div>
                 </div>

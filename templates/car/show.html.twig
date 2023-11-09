@@ -16,13 +16,11 @@
 						<span>Vendu par :</span>
 						<span>{{user.lastName|upper}} {{user.firstName}}</span>
 					</div>
-					<div class="imgVendeur">
 					{% if user.picture %}
+					<div class="imgVendeur">
 						<img src="/uploads/{{user.picture}}" alt="">
-					{% else %}
-						<div class="imgVendeurVid"></div>
-					{% endif %}
 					</div>
+					{% endif %}
 				</div>
 			</div>
 			<div class="voitureFond" style="background-image:url({{car.coverImage}})"></div>
@@ -109,7 +107,7 @@
 									{% for image in car.images %}
 										<div class="carousel-item {% if loop.first %}active{% endif %}">
 											<img src="{{image.url}}" class="imgCarouselShow" alt="image de {{car.brand}}">
-											<div class="carousel-caption d-none d-md-block">
+											<div class="carousel-caption d-md-block">
 												<h5>{{car.brand}}</h5>
 												<p>{{image.caption}}</p>
 											</div>

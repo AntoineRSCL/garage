@@ -507,6 +507,7 @@
         grid-template-columns: repeat(1,1fr);
     }
 
+    
     .voiture{
         outline: 1px solid grey;
         height: 600px;
@@ -570,6 +571,18 @@
 
         &:hover{
             outline: 3px solid black;
+        }
+    }
+    .admin{
+        height: 725px !important;
+        @media all and (max-width:1725px) and (min-width:1300px) {
+            height: 850px;
+        }
+        @media all and (max-width:1130px) and (min-width:750px) {
+            height: 850px;
+        }
+        @media all and (max-width:550px)  {
+            height: 900px;
         }
     }
 }

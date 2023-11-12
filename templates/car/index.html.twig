@@ -31,7 +31,15 @@
     <div class="contenaireVoiture">
         {% for car in cars %}
         {% set url = path('car_show', {'id':car.id}) %}
+        {% if admin %}
+            {% set urlModif = path('car_edit', {'id':car.id}) %}
+            {% set urlDelete = path('car_delete', {'id':car.id}) %}
+        {% endif %}
+            {% if admin %}
+            <div class="voiture admin">
+            {% else %}
             <div class="voiture">
+            {% endif %}
                 <div class="imgVoit">
                     <img src="{{car.coverImage}}" alt="Image de ">
                 </div>
@@ -45,7 +53,11 @@
                         <p>{{car.description}}</p>
                     </div>
                     <div class="btnVoit">
-                        <a class="btn" href="{{url}}">En savoir plus</a>
+                        <a class="btn btn-light" href="{{url}}">En savoir plus</a>
+                        {% if admin %}
+                        <a class="btn btn-warning" href="{{urlModif}}">Modifier la voiture</a>
+                        <a class="btn btn-danger" href="{{urlDelete}}">Supprimer la voiture</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

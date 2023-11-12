@@ -31,10 +31,24 @@ class CarsFixtures extends Fixture
         $users = []; //Init d'un tableau pour recup des users pour les annonces
         $genres = ['male', "femelle"];
 
+        // création d'un admin
+        $admin = new User();
+        $admin->setFirstName('Antoine')
+            ->setLastName('Baut')
+            ->setEmail('abaut2001@gmail.com')
+            ->setPassword($this->passwordHasher->hashPassword($admin, 'Antoine'))
+            ->setIntroduction($faker->sentence())
+            ->setDescription('<p>'.join('</p><p>',$faker->paragraphs(3)).'</p>')
+            ->setRoles(['ROLE_ADMIN'])
+            ->setPicture('');
+        
+        $manager->persist($admin);
+
         //Création des membres
         for ($u=1; $u <= 10; $u++) { 
             $user = new User();
             $genre = $faker->randomElement($genres);
+
 
             $hash = $this->passwordHasher->hashPassword($user, 'StandardChampion');
 

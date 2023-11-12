@@ -25,12 +25,20 @@ class CarController extends AbstractController
     {
         $cars = $repo->findAll();
         $categories = $repo->distinctCategories();
+        $admin = "";
+
+        if($this->getUser()){
+            if($this->getUser()->getRoles()[0] === "ROLE_ADMIN"){
+                $admin = "ok";
+            }
+        }
         
         return $this->render('car/index.html.twig', [
             'cars' => $cars,
             'brand' => "",
             'logoBrand' => "",
-            'categories' => $categories
+            'categories' => $categories,
+            'admin' => $admin
         ]);
     }
 
@@ -89,12 +97,20 @@ class CarController extends AbstractController
         $cars = $repo->findBy(array('slugBrand' => $slug_brand));
         $url_brand = $repo->findBy(array('slugBrand' => $slug_brand),array('price' => 'ASC'),1 ,0)[0];
         $categories = $repo->distinctCategories();
+        $admin = "";
+
+        if($this->getUser()){
+            if($this->getUser()->getRoles()[0] === "ROLE_ADMIN"){
+                $admin = "ok";
+            }
+        }
 
         return $this->render('car/index.html.twig', [
             'cars' => $cars,
             'brand' => $slug_brand,
             'logoBrand' => $url_brand,
-            'categories' => $categories
+            'categories' => $categories,
+            "admin" => $admin
         ]);
     }
 
@@ -115,9 +131,14 @@ class CarController extends AbstractController
         }
         if($car->getSeller()->getId() != $this->getUser()->getId())
         {
-            return $this->render("bundles/TwigBundle/Exception/error403.html.twig", [
-                "exception" => ""
-            ]);
+            if($this->getUser()->getRoles()[0] === "ROLE_ADMIN"){
+
+            }else{
+                return $this->render("bundles/TwigBundle/Exception/error403.html.twig", [
+                    "exception" => ""
+                ]);
+            }
+            
         }
 
         $this->addFlash(
@@ -144,7 +165,6 @@ class CarController extends AbstractController
         $sellerId = $car->getSeller();
         $user = $repos->findOneBy(array('id' => $sellerId));
 
-
         return $this->render("car/show.html.twig", [
             'car' => $car,
             'user' => $user
@@ -168,9 +188,11 @@ class CarController extends AbstractController
         }
         if($car->getSeller()->getId() != $this->getUser()->getId())
         {
-            return $this->render("bundles/TwigBundle/Exception/error403.html.twig", [
-                "exception" => ""
-            ]);
+            if($this->getUser()->getRoles()[0] !== "ROLE_ADMIN"){
+                return $this->render("bundles/TwigBundle/Exception/error403.html.twig", [
+                    "exception" => ""
+                ]);
+            }
         }
 
         $form = $this->createForm(CarsType::class, $car);

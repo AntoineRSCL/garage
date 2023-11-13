@@ -119,6 +119,7 @@ class AccountController extends AbstractController
     #[Route("/account", name:"account")]
     public function userProfile(CarsRepository $repo): Response
     {
+        //permet de verif que l'user est connecte sinon renvoi vers la connexion
         if(!$this->getUser())
         {
             return $this->redirectToRoute('account_login', []);
@@ -144,6 +145,7 @@ class AccountController extends AbstractController
     public function profile(Request $request, EntityManagerInterface $manager): Response
     {
 
+        //permet de verif que l'user est connecte sinon renvoi vers la connexion
         if(!$this->getUser())
         {
             return $this->redirectToRoute('account_login', []);
@@ -193,6 +195,7 @@ class AccountController extends AbstractController
     public function updatePassword(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $hasher): Response
     {
 
+        //permet de verif que l'user est connecte sinon renvoi vers la connexion
         if(!$this->getUser())
         {
             return $this->redirectToRoute('account_login', []);
@@ -245,6 +248,7 @@ class AccountController extends AbstractController
     public function removeImg(EntityManagerInterface $manager): Response
     {
 
+        //permet de verif que l'user est connecte sinon renvoi vers la connexion
         if(!$this->getUser())
         {
             return $this->redirectToRoute('account_login', []);
@@ -277,6 +281,7 @@ class AccountController extends AbstractController
     public function imgModify(Request $request, EntityManagerInterface $manager): Response
     {
 
+        //permet de verif que l'user est connecte sinon renvoi vers la connexion
         if(!$this->getUser())
         {
             return $this->redirectToRoute('account_login', []);

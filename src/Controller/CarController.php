@@ -27,6 +27,7 @@ class CarController extends AbstractController
         $categories = $repo->distinctCategories();
         $admin = "";
 
+        //permet de verif que l'user est un admin
         if($this->getUser()){
             if($this->getUser()->getRoles()[0] === "ROLE_ADMIN"){
                 $admin = "ok";
@@ -43,8 +44,16 @@ class CarController extends AbstractController
     }
 
     #[Route("cars/new", name:"cars_create")]
+    /**
+     * Permet de créer une nouvelle voiture
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     public function create(Request $request, EntityManagerInterface $manager): Response
     {
+        //permet de verif que l'user est connecte sinon renvoi vers la connexion
         if(!$this->getUser()){
             return $this->redirectToRoute('account_login', []);
         }
@@ -67,7 +76,7 @@ class CarController extends AbstractController
             //On ajoute l'user
             $car->setSeller($this->getUser());
 
-            // je persiste mon objet Ad
+            // je persiste mon objet Car
             $manager->persist($car);
             // j'envoie les persistances dans la bdd
             $manager->flush();
@@ -99,6 +108,7 @@ class CarController extends AbstractController
         $categories = $repo->distinctCategories();
         $admin = "";
 
+        //permet de verif que l'user est un admin
         if($this->getUser()){
             if($this->getUser()->getRoles()[0] === "ROLE_ADMIN"){
                 $admin = "ok";
@@ -125,6 +135,7 @@ class CarController extends AbstractController
     #[Route("/car/{id}/delete", name: 'car_delete')]
     public function delete(int $id, Cars $car, EntityManagerInterface $manager): Response
     {
+        //permet de verif que l'user est connecte sinon renvoi vers la connexion et si il bien l'autheur de l'annonce
         if(!$this->getUser())
         {
             return $this->redirectToRoute('account_login', []);
@@ -182,6 +193,7 @@ class CarController extends AbstractController
     #[Route("/car/{id}/edit", name: "car_edit")]
     public function edit(Request $request, EntityManagerInterface $manager, Cars $car): Response
     {
+        //permet de verif que l'user est connecte sinon renvoi vers la connexion et si l'annonce lui appartient bien
         if(!$this->getUser())
         {
             return $this->redirectToRoute('account_login', []);
